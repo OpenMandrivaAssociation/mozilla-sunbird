@@ -1,6 +1,6 @@
 %define name mozilla-sunbird
-%define oname sunbird
-%define version 0.3.1
+%define oname  lightning-sunbird
+%define version 0.5
 %define release %mkrel 1
 
 %define section Office/Time Management
@@ -13,7 +13,7 @@
 
 # even if I force mozilla-sunbird-%{version} as libname, make install
 # put it in sunbird-0.3a1
-%define vers 0.3.1
+%define vers 0.5
 %define libname sunbird-%{vers}
 
 %define mozillalibdir %{_libdir}/%{libname}
@@ -22,7 +22,7 @@ Summary: %{Summary}
 Name: %{name}
 Version: %{version}
 Release: %{release}
-Source0: %{oname}-%{version}.source.tar.bz2
+Source0: %{oname}-%version-source.tar.bz2
 Source1: sunbird-rebuild-databases.pl.in.generatechrome.bz2
 Source2: sunbird-generate-chrome.sh.bz2
 
@@ -99,7 +99,7 @@ Exec=%{_bindir}/sunbird
 Icon=%{name}
 Terminal=false
 Type=Application
-Categories=GNOME;GTK;X-MandrivaLinux-Office-TimeManagement;Office;Calendar;
+Categories=GNOME;GTK;Office;Calendar;
 EOF
 
 install -m 755 -d $RPM_BUILD_ROOT%{_miconsdir}
