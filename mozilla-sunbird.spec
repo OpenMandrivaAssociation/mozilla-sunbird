@@ -40,9 +40,11 @@ BuildRequires:  gnome-vfs2-devel
 BuildRequires:	ImageMagick 
 BuildRequires:  freetype2-devel
 BuildRequires:  X11-devel
+BuildRequires:	nss-devel
+BuildRequires:	nspr-devel
 # do not provides mozilla lib
-%define _provides_exceptions libnspr4.so\\|libplc4.so\\|libplds4.so\\|libnss\\|libsmime3\\|libsoftokn\\|libssl3\\|libgtkembedmoz.so\\|libxp.*
-%define _requires_exceptions libnspr4.so\\|libplc4.so\\|libplds4.so\\|libnss\\|libsmime3\\|libsoftokn\\|libssl3\\|libgtkembedmoz.so\\|libxp.*
+%define _provides_exceptions libgtkembedmoz.so\\|libxp.*
+%define _requires_exceptions libgtkembedmoz.so\\|libxp.*
 
 %description
 The Sunbird Project is a redesign of the Mozilla Calendar component. 
@@ -75,7 +77,18 @@ Mozilla-sunbird development files
 export MOZ_SUNBIRD=1
 export MOZ_BUILD_DATE=%{date}
 
-%configure --enable-application=calendar --disable-debug --enable-xprint --enable-strip-libs --disable-mathml --with-system-zlib --enable-toolkit=gtk2 --enable-default-toolkit=gtk2 --disable-tests --disable-freetype2 --enable-optimize="$RPM_OPT_FLAGS" --with-default-mozilla-five-home=%{mozillalibdir} --enable-single-profile --disable-profilesharing --disable-ldap --disable-mailnews --enable-extensions=pref,xmlextras --enable-crypto --disable-composer --enable-plaintext-editor-only --enable-necko-protocols=about,http,ftp,file,res --disable-accessibility --disable-activex --disable-activex-scripting --disable-installer --disable-jsd --disable-mathml --disable-necko-disk-cache --disable-oji --disable-view-source --disable-logging --disable-plugins --disable-cookies --enable-application=calendar --enable-xft --disable-pango 
+%configure \
+	--enable-application=calendar --disable-debug --enable-xprint \
+	--enable-strip-libs --disable-mathml --with-system-zlib --enable-toolkit=gtk2 \
+	--enable-default-toolkit=gtk2 --disable-tests --disable-freetype2 \
+	--enable-optimize="$RPM_OPT_FLAGS" --with-default-mozilla-five-home=%{mozillalibdir} \
+	--enable-single-profile --disable-profilesharing --disable-ldap --disable-mailnews \
+	--enable-extensions=pref,xmlextras --enable-crypto --disable-composer \
+	--enable-plaintext-editor-only --enable-necko-protocols=about,http,ftp,file,res \
+	--disable-accessibility --disable-activex --disable-activex-scripting --disable-installer \
+	--disable-jsd --disable-mathml --disable-necko-disk-cache --disable-oji --disable-view-source \
+	--disable-logging --disable-plugins --disable-cookies --enable-application=calendar \
+	--enable-xft --disable-pango --with-system-nspr --with-system-nss
 
 %make
 
@@ -181,6 +194,3 @@ umask 022
 %{_datadir}/idl/%{libname}
 %{_includedir}/%{libname}
 %multiarch %{multiarch_includedir}/* 
-
-
-
