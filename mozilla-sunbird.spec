@@ -105,7 +105,6 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
 cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-%{name}.desktop << EOF
 [Desktop Entry]
-Encoding=UTF-8
 Name=%name
 Comment=The Sunbird Project is a redesign of the Calendar component
 Exec=%{_bindir}/sunbird
