@@ -9,14 +9,17 @@
 
 #warning: always end release date with 00
 # (it should be the hour of build but it is not significant for rpm)
-%define date 2005120300
+%define date 2007083000
 
 # even if I force mozilla-sunbird-%{version} as libname, make install
 # put it in sunbird-0.3a1
 %define vers 0.5
-%define libname sunbird-%{vers}
+%define progname sunbird
+%define libname %{progname}-%{vers}
 
 %define mozillalibdir %{_libdir}/%{libname}
+%define progdir %{mozillalibdir}
+
 
 Summary: %{Summary}
 Name: %{name}
@@ -25,6 +28,9 @@ Release: %{release}
 Source0: %{oname}-%version-source.tar.bz2
 Source1: sunbird-rebuild-databases.pl.in.generatechrome.bz2
 Source2: sunbird-generate-chrome.sh.bz2
+Patch1:  nss-opt.patch
+Patch2:  abuild.patch
+Patch3:  locale.patch
 
 License: MPL/LGPL/GPL
 Group: Office
@@ -41,7 +47,9 @@ BuildRequires:	ImageMagick
 BuildRequires:  freetype2-devel
 BuildRequires:  X11-devel
 BuildRequires:	nss-devel
+BuildRequires:  libnss-static-devel
 BuildRequires:	nspr-devel
+
 # do not provides mozilla lib
 %define _provides_exceptions libgtkembedmoz.so\\|libxp.*
 %define _requires_exceptions libgtkembedmoz.so\\|libxp.*
@@ -52,6 +60,7 @@ It aims to produce a cross platform standalone calendar application based on
 Mozilla's XUL user interface language. At the moment the Sunbird name is a 
 project name. It is not official and may change in the future.
 
+%if 0
 %package devel
 Summary:        Mozilla-sunbird development files
 Group:          Development/Other
@@ -60,11 +69,13 @@ Conflicts:	%mklibname -d js 1
 
 %description devel
 Mozilla-sunbird development files
-
+%endif
 
 %prep
-%setup -q -c %{name}-%{version}
-%setup -T -D -n %{name}-%{version}/mozilla
+%setup -q -n mozilla
+%patch1 -p0 -b .nss
+%patch2 -p1 -b .abuild
+%patch3 -p0 -b .locale
 
 # let jars get compressed
 %__perl -p -i -e 's|\-0|\-9|g' config/make-jars.pl
@@ -76,30 +87,59 @@ Mozilla-sunbird development files
 
 export MOZ_SUNBIRD=1
 export MOZ_BUILD_DATE=%{date}
+export MOZILLA_OFFICIAL=1
+export BUILD_OFFICIAL=1
+export CFLAGS="$RPM_OPT_FLAGS -Os -fno-strict-aliasing -fstack-protector"
+export CXXFLAGS="$CFLAGS"
+export MOZCONFIG=$RPM_BUILD_DIR/mozconfig
+cat << EOF > $MOZCONFIG
+mk_add_options MOZILLA_OFFICIAL=1
+mk_add_options BUILD_OFFICIAL=1
+mk_add_options MOZ_MAKE_FLAGS=%{?jobs:-j%jobs}
+. \$topsrcdir/calendar/sunbird/config/mozconfig
+ac_add_options --prefix=%{_prefix}
+ac_add_options --libdir=%{_libdir}
+ac_add_options --sysconfdir=%{_sysconfdir}
+ac_add_options --mandir=%{_mandir}
+ac_add_options --includedir=%{_includedir}
+ac_add_options --enable-optimize="$CFLAGS"
+ac_add_options --with-system-jpeg
+ac_add_options --with-system-png
+ac_add_options --with-system-zlib
+ac_add_options --enable-default-toolkit=gtk2
+ac_add_options --enable-xft
+ac_add_options --disable-tests
+ac_add_options --disable-freetype2
+ac_add_options --disable-installer
+ac_add_options --enable-static
+ac_add_options --disable-shared
+ac_add_options --enable-logging
+ac_add_options --enable-official-branding
+#ac_add_options --enable-debug
+ac_add_options --with-system-nspr
+ac_add_options --enable-system-cairo
+ac_add_options --with-system-nss
+EOF
 
-%configure \
-	--enable-application=calendar --disable-debug --enable-xprint \
-	--enable-strip-libs --disable-mathml --with-system-zlib --enable-toolkit=gtk2 \
-	--enable-default-toolkit=gtk2 --disable-tests --disable-freetype2 \
-	--enable-optimize="$RPM_OPT_FLAGS" --with-default-mozilla-five-home=%{mozillalibdir} \
-	--enable-single-profile --disable-profilesharing --disable-ldap --disable-mailnews \
-	--enable-extensions=pref,xmlextras --enable-crypto --disable-composer \
-	--enable-plaintext-editor-only --enable-necko-protocols=about,http,ftp,file,res \
-	--disable-accessibility --disable-activex --disable-activex-scripting --disable-installer \
-	--disable-jsd --disable-mathml --disable-necko-disk-cache --disable-oji --disable-view-source \
-	--disable-logging --disable-plugins --disable-cookies --enable-application=calendar \
-	--enable-xft --disable-pango --with-system-nspr --with-system-nss
+make -f client.mk build
 
-%make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-%makeinstall_std
 
+rm -rf $RPM_BUILD_ROOT
+make -C xpinstall/packager STRIP=/bin/true
+# copy tree into RPM_BUILD_ROOT
+mkdir -p $RPM_BUILD_ROOT%{progdir}
+cp -rf $RPM_BUILD_DIR/mozilla/dist/%{progname}/* $RPM_BUILD_ROOT%{progdir}
+mkdir $RPM_BUILD_ROOT%{_bindir}
+ln -sf ../..%{progdir}/%{progname} $RPM_BUILD_ROOT%{_bindir}/%{progname}
+
+%if 0
 # multiarch files
 %multiarch_binaries $RPM_BUILD_ROOT%{_bindir}/sunbird-config
 %multiarch_includes $RPM_BUILD_ROOT%{_includedir}/%{libname}/mozilla-config.h
 %multiarch_includes $RPM_BUILD_ROOT%{_includedir}/%{libname}/js/jsautocfg.h
+%endif
 
 # XDG menu entry
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
@@ -162,7 +202,7 @@ umask 022
 %files
 %defattr(-,root,root)
 %doc LICENSE LEGAL README.txt
-%{_bindir}/sunbird
+%{_bindir}/%{progname}
 %{_datadir}/applications/mandriva-%{name}.desktop
 %{_miconsdir}/%{name}.png
 %{_iconsdir}/%{name}.png
@@ -183,7 +223,7 @@ umask 022
 %ghost %{mozillalibdir}/components/xpti.dat
 
 
-
+%if 0
 %files devel
 %defattr(-,root,root)
 %{_libdir}/pkgconfig/*.pc
@@ -193,3 +233,4 @@ umask 022
 %{_datadir}/idl/%{libname}
 %{_includedir}/%{libname}
 %multiarch %{multiarch_includedir}/* 
+%endif
