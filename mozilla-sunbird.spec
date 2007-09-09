@@ -1,7 +1,7 @@
 %define name mozilla-sunbird
 %define oname  lightning-sunbird
 %define version 0.5
-%define release %mkrel 1
+%define release %mkrel 2
 
 %define section Office/Time Management
 %define title	Mozilla-Sunbird
@@ -145,7 +145,7 @@ ln -sf ../..%{progdir}/%{progname} $RPM_BUILD_ROOT%{_bindir}/%{progname}
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
 cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-%{name}.desktop << EOF
 [Desktop Entry]
-Name=%name
+Name=Mozilla Sunbird
 Comment=The Sunbird Project is a redesign of the Calendar component
 Exec=%{_bindir}/sunbird
 Icon=%{name}
