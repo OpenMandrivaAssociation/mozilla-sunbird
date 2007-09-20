@@ -1,7 +1,7 @@
 %define name mozilla-sunbird
 %define oname  lightning-sunbird
 %define version 0.5
-%define release %mkrel 2
+%define release %mkrel 3
 
 %define section Office/Time Management
 %define title	Mozilla-Sunbird
@@ -152,6 +152,7 @@ Icon=%{name}
 Terminal=false
 Type=Application
 Categories=GNOME;GTK;Office;Calendar;
+StartupWMClass=Sunbird-bin
 EOF
 
 install -m 755 -d $RPM_BUILD_ROOT%{_miconsdir}
