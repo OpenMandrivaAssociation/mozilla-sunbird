@@ -1,7 +1,7 @@
 %define name mozilla-sunbird
 %define oname  lightning-sunbird
-%define version 0.5
-%define release %mkrel 3
+%define version 0.7
+%define release %mkrel 1
 
 %define section Office/Time Management
 %define title	Mozilla-Sunbird
@@ -37,13 +37,13 @@ Group: Office
 Url: http://www.mozilla.org/projects/calendar
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
-BuildRequires:  jpeg-devel 
-BuildRequires:  png-devel 
+BuildRequires:  jpeg-devel
+BuildRequires:  png-devel
 BuildRequires:  libIDL-devel
 BuildRequires:  zip tcsh
 BuildRequires:  gtk+2-devel >= 2.2.0
 BuildRequires:  gnome-vfs2-devel
-BuildRequires:	ImageMagick 
+BuildRequires:	ImageMagick
 BuildRequires:  freetype2-devel
 BuildRequires:  X11-devel
 BuildRequires:	nss-devel
@@ -55,9 +55,9 @@ BuildRequires:	nspr-devel
 %define _requires_exceptions libgtkembedmoz.so\\|libxp.*
 
 %description
-The Sunbird Project is a redesign of the Mozilla Calendar component. 
-It aims to produce a cross platform standalone calendar application based on 
-Mozilla's XUL user interface language. At the moment the Sunbird name is a 
+The Sunbird Project is a redesign of the Mozilla Calendar component.
+It aims to produce a cross platform standalone calendar application based on
+Mozilla's XUL user interface language. At the moment the Sunbird name is a
 project name. It is not official and may change in the future.
 
 %if 0
@@ -159,8 +159,8 @@ install -m 755 -d $RPM_BUILD_ROOT%{_miconsdir}
 install -m 755 -d $RPM_BUILD_ROOT%{_iconsdir}
 install -m 755 -d $RPM_BUILD_ROOT%{_liconsdir}
 convert -resize 16x16  $RPM_BUILD_ROOT%{mozillalibdir}/icons/mozicon50.xpm $RPM_BUILD_ROOT%{_miconsdir}/%{name}.png
-convert -resize 32x32  $RPM_BUILD_ROOT%{mozillalibdir}/icons/mozicon50.xpm $RPM_BUILD_ROOT%{_iconsdir}/%{name}.png 
-convert -resize 48x48  $RPM_BUILD_ROOT%{mozillalibdir}/icons/mozicon50.xpm $RPM_BUILD_ROOT%{_liconsdir}/%{name}.png 
+convert -resize 32x32  $RPM_BUILD_ROOT%{mozillalibdir}/icons/mozicon50.xpm $RPM_BUILD_ROOT%{_iconsdir}/%{name}.png
+convert -resize 48x48  $RPM_BUILD_ROOT%{mozillalibdir}/icons/mozicon50.xpm $RPM_BUILD_ROOT%{_liconsdir}/%{name}.png
 
 # install our rebuild file
 bzcat %{SOURCE1} | sed -e "s|mozilla-MOZILLA_VERSION|%{libname}|g;s|LIBDIR|%{_libdir}|g" > \
@@ -233,5 +233,5 @@ umask 022
 %{_datadir}/aclocal/*.m4
 %{_datadir}/idl/%{libname}
 %{_includedir}/%{libname}
-%multiarch %{multiarch_includedir}/* 
+%multiarch %{multiarch_includedir}/*
 %endif
