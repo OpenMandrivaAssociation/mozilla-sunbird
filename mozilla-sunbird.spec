@@ -35,6 +35,7 @@ Patch3:  locale.patch
 License: MPL/LGPL/GPL
 Group: Office
 Url: http://www.mozilla.org/projects/calendar
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 BuildRequires:  jpeg-devel
 BuildRequires:  png-devel
