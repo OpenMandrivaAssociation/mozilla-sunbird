@@ -1,7 +1,7 @@
 %define name mozilla-sunbird
 %define oname  lightning-sunbird
 %define version 0.7
-%define release %mkrel 1
+%define release %mkrel 2
 
 %define section Office/Time Management
 %define title	Mozilla-Sunbird
@@ -31,7 +31,7 @@ Source2: sunbird-generate-chrome.sh.bz2
 Patch1:  nss-opt.patch
 Patch2:  abuild.patch
 Patch3:  locale.patch
-
+Patch4:  sunbird-0.7-uilocale.patch
 License: MPL/LGPL/GPL
 Group: Office
 Url: http://www.mozilla.org/projects/calendar
@@ -76,6 +76,7 @@ Mozilla-sunbird development files
 %patch1 -p0 -b .nss
 %patch2 -p1 -b .abuild
 %patch3 -p0 -b .locale
+%patch4 -p1 -b .uilocale
 
 # let jars get compressed
 %__perl -p -i -e 's|\-0|\-9|g' config/make-jars.pl
