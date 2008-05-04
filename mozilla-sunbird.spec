@@ -1,7 +1,7 @@
 %define name mozilla-sunbird
 %define oname  lightning-sunbird
-%define version 0.7
-%define release %mkrel 2
+%define version 0.8
+%define release %mkrel 1
 
 %define section Office/Time Management
 %define title	Mozilla-Sunbird
