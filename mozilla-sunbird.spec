@@ -1,7 +1,7 @@
 %define name mozilla-sunbird
 %define oname  lightning-sunbird
 %define version 0.8
-%define release %mkrel 1
+%define release %mkrel 2
 
 %define section Office/Time Management
 %define title	Mozilla-Sunbird
@@ -13,9 +13,8 @@
 
 # even if I force mozilla-sunbird-%{version} as libname, make install
 # put it in sunbird-0.3a1
-%define vers 0.5
 %define progname sunbird
-%define libname %{progname}-%{vers}
+%define libname %{progname}-%{version}
 
 %define mozillalibdir %{_libdir}/%{libname}
 %define progdir %{mozillalibdir}
