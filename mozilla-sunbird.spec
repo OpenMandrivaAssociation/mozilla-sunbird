@@ -1,7 +1,7 @@
 %define name mozilla-sunbird
 %define oname  lightning-sunbird
 %define version 0.8
-%define release %mkrel 2
+%define release %mkrel 3
 
 %define section Office/Time Management
 %define title	Mozilla-Sunbird
@@ -189,6 +189,9 @@ touch $RPM_BUILD_ROOT%{mozillalibdir}/defaults.ini
 touch $RPM_BUILD_ROOT%{mozillalibdir}/components/compreg.dat
 touch $RPM_BUILD_ROOT%{mozillalibdir}/components/xpti.dat
 touch $RPM_BUILD_ROOT%{mozillalibdir}/chrome/app-chrome.manifest
+
+# dummy manifest file to avoid chrome registration error in sunbird extension
+touch $RPM_BUILD_ROOT%{mozillalibdir}/extensions/{e2fda1a4-762b-4020-b5ad-a41df1933103}/chrome.manifest
 
 %clean
 rm -rf $RPM_BUILD_ROOT
