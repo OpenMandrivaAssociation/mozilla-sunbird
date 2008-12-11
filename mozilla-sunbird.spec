@@ -43,7 +43,7 @@ BuildRequires:  libIDL-devel
 BuildRequires:  zip tcsh
 BuildRequires:  gtk+2-devel >= 2.2.0
 BuildRequires:  gnome-vfs2-devel
-BuildRequires:	ImageMagick
+BuildRequires:	imagemagick
 BuildRequires:  freetype2-devel
 BuildRequires:  X11-devel
 BuildRequires:	nss-devel
