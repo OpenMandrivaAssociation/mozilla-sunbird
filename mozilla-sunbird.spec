@@ -1,7 +1,7 @@
 %define name mozilla-sunbird
 %define oname  lightning-sunbird
 %define version 0.9
-%define release %mkrel 1
+%define release %mkrel 3
 
 %define section Office/Time Management
 %define title	Mozilla-Sunbird
@@ -27,6 +27,7 @@ Release: %{release}
 Source0: %{oname}-%version-source.tar.bz2
 Source1: sunbird-rebuild-databases.pl.in.generatechrome.bz2
 Source2: sunbird-generate-chrome.sh.bz2
+Patch0:  sunbird-0.9-fix-str-fmt.patch
 Patch1:  nss-opt.patch
 Patch2:  abuild.patch
 Patch3:  locale.patch
@@ -73,6 +74,7 @@ Mozilla-sunbird development files
 
 %prep
 %setup -q -n mozilla
+%patch0 -p1 -b .str
 %patch1 -p0 -b .nss
 %patch2 -p1 -b .abuild
 %patch3 -p0 -b .locale
