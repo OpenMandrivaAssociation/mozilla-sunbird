@@ -1,7 +1,7 @@
 %define name mozilla-sunbird
 %define oname  lightning-sunbird
 %define version 0.9
-%define release %mkrel 3
+%define release %mkrel 4
 
 %define section Office/Time Management
 %define title	Mozilla-Sunbird
@@ -33,6 +33,7 @@ Patch2:  abuild.patch
 Patch3:  locale.patch
 Patch4:  sunbird-0.7-uilocale.patch
 Patch5:  mozilla-sunbird-0.8-glibc28-max_path-fix.patch
+Patch6:  sunbird-0.9-gcc-4.4.patch
 License: MPL/LGPL/GPL
 Group: Office
 Url: http://www.mozilla.org/projects/calendar
@@ -80,6 +81,7 @@ Mozilla-sunbird development files
 %patch3 -p0 -b .locale
 %patch4 -p1 -b .uilocale
 %patch5 -p1 -b .glibc28-max_path-fix
+%patch6 -p1 -b .gcc44
 
 # let jars get compressed
 %__perl -p -i -e 's|\-0|\-9|g' config/make-jars.pl
