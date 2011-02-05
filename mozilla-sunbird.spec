@@ -1,7 +1,7 @@
 %define name mozilla-sunbird
 %define oname  lightning-sunbird
 %define version 0.9
-%define release %mkrel 7
+%define release %mkrel 8
 
 %define section Office/Time Management
 %define title	Mozilla-Sunbird
@@ -47,7 +47,11 @@ BuildRequires:  gtk+2-devel >= 2.2.0
 BuildRequires:  gnome-vfs2-devel
 BuildRequires:	imagemagick
 BuildRequires:  freetype2-devel
-BuildRequires:  X11-devel
+BuildRequires:	libx11-devel
+BuildRequires:	libxft-devel
+BuildRequires:	libxrender-devel
+BuildRequires:	libxt-devel
+BuildRequires:	fontconfig-devel
 BuildRequires:	nss-devel
 BuildRequires:  libnss-static-devel
 BuildRequires:	nspr-devel
