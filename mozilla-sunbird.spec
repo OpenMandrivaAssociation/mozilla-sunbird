@@ -101,7 +101,7 @@ export MOZILLA_OFFICIAL=1
 export BUILD_OFFICIAL=1
 export CFLAGS="$RPM_OPT_FLAGS -Os -fno-strict-aliasing -fstack-protector"
 export CXXFLAGS="$CFLAGS"
-export MOZCONFIG=$RPM_BUILD_DIR/mozconfig
+export MOZCONFIG=%{_builddir}/mozconfig
 cat << EOF > $MOZCONFIG
 mk_add_options MOZILLA_OFFICIAL=1
 mk_add_options BUILD_OFFICIAL=1
@@ -140,7 +140,7 @@ rm -rf $RPM_BUILD_ROOT
 make -C xpinstall/packager STRIP=/bin/true
 # copy tree into RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{progdir}
-cp -rf $RPM_BUILD_DIR/mozilla/dist/%{progname}/* $RPM_BUILD_ROOT%{progdir}
+cp -rf %{_builddir}/mozilla/dist/%{progname}/* $RPM_BUILD_ROOT%{progdir}
 mkdir $RPM_BUILD_ROOT%{_bindir}
 ln -sf ../..%{progdir}/%{progname} $RPM_BUILD_ROOT%{_bindir}/%{progname}
 
