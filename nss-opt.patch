@@ -1,0 +1,25 @@
+From: Wolfgang Rosenauer <stark@suse.de>
+Subject: NSS doesn't inherit CFLAGS
+References: https://bugzilla.mozilla.org/show_bug.cgi?id=101249
+Description:
+CFLAGS are not taken from mozilla build
+
+Index: security/manager/Makefile.in
+===================================================================
+RCS file: /cvsroot/mozilla/security/manager/Makefile.in,v
+retrieving revision 1.52
+diff -u -r1.52 Makefile.in
+--- security/manager/Makefile.in	7 Jan 2004 13:36:50 -0000	1.52
++++ security/manager/Makefile.in	10 Mar 2004 09:44:29 -0000
+@@ -71,7 +71,10 @@
+ ifneq ($(ABS_topsrcdir),$(MOZ_BUILD_ROOT))
+ DEFAULT_GMAKE_FLAGS += BUILD_TREE=$(MOZ_BUILD_ROOT)
+ endif
+-ifndef MOZ_DEBUG
++ifdef MOZ_DEBUG
++DEFAULT_GMAKE_FLAGS += OPTIMIZER="$(MOZ_DEBUG_FLAGS)"
++else
++DEFAULT_GMAKE_FLAGS += OPTIMIZER="$(MOZ_OPTIMIZE_FLAGS)"
+ DEFAULT_GMAKE_FLAGS += BUILD_OPT=1
+ endif
+ ifdef GNU_CC

@@ -1,0 +1,24 @@
+--- mozilla/calendar/sunbird/app/mozilla.in.orig	2008-02-28 14:08:25.000000000 +0100
++++ mozilla/calendar/sunbird/app/mozilla.in	2008-02-28 14:08:52.000000000 +0100
+@@ -249,6 +249,22 @@ done
+ 
+ export MRE_HOME
+ 
++# Try without a local variant first, then with a local variant
++# So that pt-BR doesn't try to use pt for example
++
++SHORTMOZLOCALE=`echo $LANG | sed "s|_\([^.]*\).*||g"`
++MOZLOCALE=`echo $LANG | sed "s|_\([^.]*\).*|-\1|g"`
++
++if [ -f $dist_bin/extensions/langpack-${MOZLOCALE}@sunbird.mozilla.org/chrome/$MOZLOCALE.jar ]
++then
++        set -- "$@" -UILocale $MOZLOCALE
++else
++        if [ -f $dist_bin/extensions/langpack-${SHORTMOZLOCALE}@sunbird.mozilla.org/chrome/$SHORTMOZLOCALE.jar ]
++        then
++                set -- "$@" -UILocale $SHORTMOZLOCALE
++        fi
++fi
++
+ ## Start addon scripts
+ moz_pis_startstop_scripts "start"

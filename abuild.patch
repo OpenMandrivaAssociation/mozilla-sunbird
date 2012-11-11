@@ -1,0 +1,117 @@
+Index: mozilla/intl/unicharutil/src/nsEntityConverter.cpp
+===================================================================
+--- mozilla.orig/intl/unicharutil/src/nsEntityConverter.cpp
++++ mozilla/intl/unicharutil/src/nsEntityConverter.cpp
+@@ -236,10 +236,11 @@ nsEntityConverter::ConvertToEntities(con
+     if (IS_HIGH_SURROGATE(inString[i]) &&
+         i + 2 < len &&
+         IS_LOW_SURROGATE(inString[i + 1])) {
+-      key.AppendInt(SURROGATE_TO_UCS4(inString[i], inString[++i]), 10);
++        key.AppendInt(SURROGATE_TO_UCS4(inString[i], inString[i + 1]), 10);
++        ++i;
+     }
+     else {
+-      key.AppendInt(inString[i],10);
++        key.AppendInt(inString[i],10);
+     }
+     
+     nsXPIDLString value;
+Index: mozilla/layout/base/nsCSSRendering.cpp
+===================================================================
+--- mozilla.orig/layout/base/nsCSSRendering.cpp
++++ mozilla/layout/base/nsCSSRendering.cpp
+@@ -1000,14 +1000,14 @@ const nscolor kBlackColor = NS_RGB(0,0,0
+             FillOrInvertRect(aContext,  dashRect.x, borderOutside.y,dashRect.width, dashRect.height-adjust,isInvert);
+             FillOrInvertRect(aContext,dashRect.x,(borderOutside.YMost()-(dashRect.height-adjust)),dashRect.width, dashRect.height-adjust,isInvert);
+             currRect.y += (dashRect.height-adjust);
+-            temp = temp-= (dashRect.height-adjust);
++            temp-= (dashRect.height-adjust);
+           } else {
+             adjust = (temp%dashRect.width)/2;                   // adjust a tad longer
+             // draw in the left and right
+             FillOrInvertRect(aContext, dashRect.x, borderOutside.y,dashRect.width, dashRect.height+adjust,isInvert);
+             FillOrInvertRect(aContext, dashRect.x,(borderOutside.YMost()-(dashRect.height+adjust)),dashRect.width, dashRect.height+adjust,isInvert);
+             currRect.y += (dashRect.height+adjust);
+-            temp = temp-= (dashRect.height+adjust);
++            temp-= (dashRect.height+adjust);
+           }
+         
+           if( temp > ywidth)
+@@ -1066,14 +1066,14 @@ const nscolor kBlackColor = NS_RGB(0,0,0
+             FillOrInvertRect(aContext, borderOutside.x,dashRect.y,dashRect.width-adjust,dashRect.height,isInvert);
+             FillOrInvertRect(aContext, (borderOutside.XMost()-(dashRect.width-adjust)),dashRect.y,dashRect.width-adjust,dashRect.height,isInvert);
+             currRect.x += (dashRect.width-adjust);
+-            temp = temp-= (dashRect.width-adjust);
++            temp-= (dashRect.width-adjust);
+           } else {
+             adjust = (temp%dashRect.width)/2;
+             // draw in the left and right
+             FillOrInvertRect(aContext, borderOutside.x,dashRect.y,dashRect.width+adjust,dashRect.height,isInvert);
+             FillOrInvertRect(aContext, (borderOutside.XMost()-(dashRect.width+adjust)),dashRect.y,dashRect.width+adjust,dashRect.height,isInvert);
+             currRect.x += (dashRect.width+adjust);
+-            temp = temp-= (dashRect.width+adjust);
++            temp-= (dashRect.width+adjust);
+           }
+        
+ 
+Index: mozilla/layout/generic/nsObjectFrame.cpp
+===================================================================
+--- mozilla.orig/layout/generic/nsObjectFrame.cpp
++++ mozilla/layout/generic/nsObjectFrame.cpp
+@@ -1847,6 +1847,8 @@ nsObjectFrame::Paint(nsPresContext*     
+     float             t2p;
+     window.window =   nsnull;
+ 
++    memset(&window, 0, sizeof (window));
++
+     // prepare embedded mode printing struct
+     nsPluginPrint npprint;
+     npprint.mode = nsPluginMode_Embedded;
+Index: mozilla/layout/xul/base/src/nsBox.cpp
+===================================================================
+--- mozilla.orig/layout/xul/base/src/nsBox.cpp
++++ mozilla/layout/xul/base/src/nsBox.cpp
+@@ -863,7 +863,7 @@ nsBox::SyncLayout(nsBoxLayoutState& aSta
+       while (box) {
+         nsRect* overflowArea = box->GetOverflowAreaProperty();
+         nsRect bounds = overflowArea ? *overflowArea + box->GetPosition() :
+-                                         bounds = box->GetRect();
++          box->GetRect();
+         rect.UnionRect(rect, bounds);
+ 
+         box->GetNextBox(&box);
+Index: mozilla/netwerk/cache/src/nsDiskCacheMap.h
+===================================================================
+--- mozilla.orig/netwerk/cache/src/nsDiskCacheMap.h
++++ mozilla/netwerk/cache/src/nsDiskCacheMap.h
+@@ -168,7 +168,7 @@ public:
+         
+         // set blockCount
+         NS_ASSERTION( (blockCount>=1) && (blockCount<=4),"invalid block count");
+-        blockCount = --blockCount;
++        --blockCount;
+         mDataLocation |= (blockCount << eExtraBlocksOffset) & eExtraBlocksMask;
+         
+         mDataLocation |= eLocationInitializedMask;
+@@ -236,7 +236,7 @@ public:
+         
+         // set blockCount
+         NS_ASSERTION( (blockCount>=1) && (blockCount<=4),"invalid block count");
+-        blockCount = --blockCount;
++        --blockCount;
+         mMetaLocation |= (blockCount << eExtraBlocksOffset) & eExtraBlocksMask;
+         
+         mMetaLocation |= eLocationInitializedMask;
+Index: mozilla/content/events/src/nsEventStateManager.cpp
+===================================================================
+--- mozilla.orig/content/events/src/nsEventStateManager.cpp
++++ mozilla/content/events/src/nsEventStateManager.cpp
+@@ -4301,7 +4301,7 @@ nsEventStateManager::SendFocusBlur(nsPre
+               do_QueryInterface(GetDocumentOuterWindow(mDocument));
+             if (newWindow) {
+               nsIFocusController *newFocusController =
+-                newFocusController = newWindow->GetRootFocusController();
++                newWindow->GetRootFocusController();
+               nsCOMPtr<nsPIDOMWindow> oldWindow =
+                 do_QueryInterface(GetDocumentOuterWindow(gLastFocusedDocument));
+               if (oldWindow) {

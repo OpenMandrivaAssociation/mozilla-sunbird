@@ -1,0 +1,54 @@
+--- mozilla/js/src/xpconnect/shell/xpcshell.cpp.str	2008-12-31 14:02:58.000000000 -0500
++++ mozilla/js/src/xpconnect/shell/xpcshell.cpp	2008-12-31 14:03:20.000000000 -0500
+@@ -542,7 +542,7 @@
+ #endif
+     {
+         char line[256];
+-        fprintf(gOutFile, prompt);
++        fprintf(gOutFile, "%s", prompt);
+         fflush(gOutFile);
+         if (!fgets(line, sizeof line, file))
+             return JS_FALSE;
+--- mozilla/gfx/src/ps/nsType1.cpp.str	2008-12-31 14:15:26.000000000 -0500
++++ mozilla/gfx/src/ps/nsType1.cpp	2008-12-31 14:15:42.000000000 -0500
+@@ -708,7 +708,7 @@
+   const static char sixtyFourZeros[] =  
+       "0000000000000000000000000000000000000000000000000000000000000000\n";
+   for (i = 0; i < 8; i++) 
+-    fprintf(aFile, sixtyFourZeros);
++    fprintf(aFile, "%s", sixtyFourZeros);
+ 
+   fprintf(aFile, "cleartomark\n%%%%EndResource\n"); 
+ 
+--- mozilla/widget/src/gtk2/nsFilePicker.cpp.str	2008-12-31 14:28:59.000000000 -0500
++++ mozilla/widget/src/gtk2/nsFilePicker.cpp	2008-12-31 14:29:13.000000000 -0500
+@@ -480,6 +480,7 @@
+                                   GTK_DIALOG_DESTROY_WITH_PARENT,
+                                   GTK_MESSAGE_QUESTION,
+                                   GTK_BUTTONS_YES_NO,
++				  "%s",
+                                   NS_ConvertUTF16toUTF8(message).get());
+   gtk_window_set_title(GTK_WINDOW(dialog), NS_ConvertUTF16toUTF8(title).get());
+   if (parent_window && parent_window->group) {
+--- mozilla/xpinstall/wizard/unix/src2/nsInstallDlg.cpp.str	2008-12-31 14:55:10.000000000 -0500
++++ mozilla/xpinstall/wizard/unix/src2/nsInstallDlg.cpp	2008-12-31 14:55:58.000000000 -0500
+@@ -793,7 +793,7 @@
+             break;
+ 
+         case ACT_COMPLETE:
+-            sprintf(msg, gCtx->Res("COMPLETING_INSTALL"));
++            sprintf(msg, "%s", gCtx->Res("COMPLETING_INSTALL"));
+             break;
+ 
+         default:
+--- mozilla/calendar/libical/src/libical/sspm.c.str	2008-12-31 15:31:13.000000000 -0500
++++ mozilla/calendar/libical/src/libical/sspm.c	2008-12-31 15:31:35.000000000 -0500
+@@ -1493,7 +1493,7 @@
+     /* Append any content type parameters */    
+     if(header->content_type_params != 0){
+ 	for(i=0; *(header->content_type_params[i])!= 0;i++){
+-	    snprintf(temp,sizeof(temp),header->content_type_params[i]);
++	    snprintf(temp,sizeof(temp),"%s",header->content_type_params[i]);
+ 	    sspm_append_char(buf,';');
+ 	    sspm_append_string(buf,temp);
+ 	}
