@@ -36,7 +36,7 @@ Patch5:  mozilla-sunbird-0.8-glibc28-max_path-fix.patch
 Patch6:  sunbird-0.9-gcc-4.4.patch
 License: MPL/LGPL/GPL
 Group: Office
-Url: http://www.mozilla.org/projects/calendar
+Url: https://www.mozilla.org/projects/calendar
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 BuildRequires:  jpeg-devel
