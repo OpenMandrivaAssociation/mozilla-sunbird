@@ -39,6 +39,7 @@ Group: Office
 Url: https://www.mozilla.org/projects/calendar
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
+BuildRequires:	make
 BuildRequires:  jpeg-devel
 BuildRequires:  png-devel
 BuildRequires:  libIDL-devel
